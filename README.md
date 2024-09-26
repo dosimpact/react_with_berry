@@ -1,3 +1,4 @@
+# Vite + React + TS + Yarn Berry  
 
 ## 설치  
 ```
@@ -11,33 +12,58 @@ yarn set version berry
 yarn
 ```
 
+## Zero Install
 
-1. **`.pnp.cjs`, `.pnp.js`, `.pnp.loader.mjs`**: 이 파일들은 Yarn PnP 환경에서 의존성 경로를 설정하는 파일입니다. 다른 개발자들이 동일한 환경에서 프로젝트를 실행할 수 있도록 이 파일을 공유하는 경우도 있지만, 보통 이 파일들은 로컬 환경에 종속적이므로 `.gitignore`에 추가할 수 있습니다.
-   
-2. **`.yarn/cache/**`: 캐시된 패키지 파일들입니다. 각 로컬 환경에서 패키지가 캐시되므로 이 폴더는 Git에 올리지 않아도 됩니다.
-
-3. **`.yarn/unplugged/**`: PnP에서 패키지를 로컬에서 "언플러그"한 버전이 저장되는 폴더입니다. 이것도 Git에 올리지 않습니다.
-
-4. **`.yarn/build-state.yml`**: 빌드 상태 파일로, 로컬 환경에 종속적이므로 올리지 않아도 됩니다.
-
-5. **`node_modules/`**: PnP 사용 시에도 일부 개발 도구들은 여전히 `node_modules` 폴더를 사용하기 때문에 존재할 수 있습니다. 이 폴더는 항상 `.gitignore`에 추가하는 것이 좋습니다.
-
-6. **`.yarn/install-state.gz`**: 설치 상태 파일로 로컬 환경에서만 필요합니다.
-
-일반적으로 `.yarnclean`, `.yarn-integrity`, `.yarnrc.yml` 같은 설정 파일은 Git에 포함되지만, 위에서 언급한 캐시 파일들과 빌드 관련 파일들은 제외하는 것이 좋습니다.
-
-`.gitignore`에 아래와 같이 추가하면 됩니다:
+- .gitignore 설정만 해주면 된다.  
 
 ```
+If you're using Zero-Installs:
+
+.yarn/*
+!.yarn/cache
+!.yarn/patches
+!.yarn/plugins
+!.yarn/releases
+!.yarn/sdks
+!.yarn/versions
+
+If you're not using Zero-Installs:
+
 .pnp.*
-.yarn/cache/
-.yarn/unplugged/
-.yarn/build-state.yml
-.yarn/install-state.gz
-node_modules/
+.yarn/*
+!.yarn/patches
+!.yarn/plugins
+!.yarn/releases
+!.yarn/sdks
+!.yarn/versions
+
+```
+## 이슈: node_modules가 자꾸 생기는 이슈(vite)  
+
+```
+// vite.config.ts
+{
+  ...,
+  cacheDir: './.vite' // 추가
+}
+
+// .gitignore
+{
+  # vite cache
+  .vite // 추가
+}
 ```
 
+## 이슈: yarn berry 설치 후 모듈 찾기 불가능  
+
+```js
+1.VS Code에 SDK 설치
+yarn dlx @yarnpkg/sdks vscode
 
 
-##  이슈: yarn berry 설치 후 모듈 찾기 불가능  
+2.Tyesciprt를 워크스페이스의 버전으로 변경하기. 
+- Ctrl + Shift + P
+- Select Typescript Version
+- Use Workspace Version 클릭
 
+```
